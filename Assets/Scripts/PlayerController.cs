@@ -1,79 +1,96 @@
+using System;
 using UnityEngine;
 
-// Este script necesita físicas y una forma de colisión para que el personaje pueda moverse y chocar con el escenario.
 [RequireComponent(typeof(Rigidbody2D), typeof(Collider2D))]
 public class PlayerController : MonoBehaviour
 {
-    [Header("Movimiento")]
-    // Estos valores se pueden ajustar desde el Inspector para probar cómo se siente el personaje.
-    [SerializeField] private float velocidad = 6f;
-    [SerializeField] private float fuerzaSalto = 11f;
-
-    [Header("Suelo")]
-    // Este objeto pequeño se coloca debajo de los pies para saber si el personaje está pisando una plataforma.
-    [SerializeField] private Transform detectorSuelo;
-    // Solo los objetos que estén en esta capa cuentan como suelo.
-    [SerializeField] private LayerMask capaSuelo;
-
-    // Guardamos el Rigidbody2D para poder mover al personaje usando las físicas de Unity.
-    private Rigidbody2D cuerpo;
-    // Aquí se guarda si el jugador está presionando izquierda, derecha o ninguna tecla.
-    private float horizontal;
-    // Se activa al presionar saltar y se usa después en la parte de físicas.
-    private bool saltoSolicitado;
-    // Indica si el detector de suelo está tocando una plataforma.
-    private bool enSuelo;
-    // Recordamos dónde inició el personaje para poder devolverlo allí cuando toca un peligro.
-    private Vector3 puntoInicio;
-
-    private void Awake()
+    [Header("Movimiento del PA1")]
+    [SerializeField] float velocidad = 6f;
+    [SerializeField] float fuerzaSalto = 11f;
+    [SerializeField] Transform detectorSuelo;
+    [SerializeField] LayerMask capaSuelo = 256;
+    public event Action Salto;
+    public event Action Aterrizaje;
+    public event Action<Vector3> Reubicado;
+    public bool EnSuelo
     {
-        // Buscamos el Rigidbody2D que ya tiene este mismo personaje.
+        get; private set;
+    }
+    public float VelocidadX => cuerpo.linearVelocity.x;
+    public float VelocidadY => cuerpo.linearVelocity.y;
+    public Vector3 PuntoControl
+    {
+        get; private set;
+    }
+    Rigidbody2D cuerpo;
+    float horizontal, coyote, buffer;
+    bool cortarSalto;
+    readonly RaycastHit2D[] contactos = new RaycastHit2D[6];
+    void Awake()
+    {
         cuerpo = GetComponent<Rigidbody2D>();
-        // Guardamos la posición inicial una sola vez, al comenzar el juego.
-        puntoInicio = transform.position;
+        PuntoControl = transform.position;
     }
-
-    private void Update()
+    void Update()
     {
-        // Leemos las teclas de movimiento. Da -1 para izquierda, 1 para derecha y 0 si no se presiona nada.
+        if (GameManager.Instancia != null && !GameManager.Instancia.Jugando)
+        {
+            horizontal = 0;
+            buffer = 0;
+            return;
+        }
         horizontal = Input.GetAxisRaw("Horizontal");
-
-        if (horizontal != 0f)
-        {
-            // Volteamos la imagen para que el personaje mire hacia donde está caminando.
-            GetComponent<SpriteRenderer>().flipX = horizontal < 0f;
-        }
-
-        if (Input.GetButtonDown("Jump"))
-        {
-            // Aquí solo guardamos que el jugador quiere saltar; el salto se aplica en FixedUpdate.
-            saltoSolicitado = true;
-        }
+        if (Input.GetButtonDown("Jump") || Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
+            buffer = .12f;
+        if (Input.GetButtonUp("Jump") || Input.GetKeyUp(KeyCode.W) || Input.GetKeyUp(KeyCode.UpArrow))
+            cortarSalto = true;
     }
-
-    private void FixedUpdate()
+    void FixedUpdate()
     {
-        // Revisamos un círculo pequeño debajo de los pies. Si toca la capa de suelo, el personaje puede saltar.
-        enSuelo = Physics2D.OverlapCircle(detectorSuelo.position, 0.12f, capaSuelo);
-
-        // Movemos al personaje en horizontal y dejamos que la gravedad siga controlando la velocidad vertical.
+        bool antes = EnSuelo;
+        var filter = new ContactFilter2D { useLayerMask = true, layerMask = capaSuelo, useTriggers = false };
+        int count = cuerpo.Cast(Vector2.down, filter, contactos, .09f);
+        EnSuelo = false;
+        for (int i = 0; i < count; i++)
+            if (contactos[i].normal.y > .65f && cuerpo.linearVelocity.y <= .1f)
+                EnSuelo = true;
+        if (!antes && EnSuelo)
+            Aterrizaje?.Invoke();
+        coyote = EnSuelo ? .11f : coyote - Time.fixedDeltaTime;
+        buffer -= Time.fixedDeltaTime;
         cuerpo.linearVelocity = new Vector2(horizontal * velocidad, cuerpo.linearVelocity.y);
-
-        if (saltoSolicitado && enSuelo)
+        if (buffer > 0 && coyote > 0)
         {
-            // Solo saltamos si se presionó la tecla y además el personaje está tocando el suelo.
             cuerpo.linearVelocity = new Vector2(cuerpo.linearVelocity.x, fuerzaSalto);
+            coyote = 0;
+            buffer = 0;
+            EnSuelo = false;
+            Salto?.Invoke();
         }
-
-        // Reiniciamos la solicitud para que no se repita el salto en los siguientes cuadros.
-        saltoSolicitado = false;
+        if (cortarSalto && cuerpo.linearVelocity.y > 0)
+            cuerpo.linearVelocity = new Vector2(cuerpo.linearVelocity.x, cuerpo.linearVelocity.y * .55f);
+        cortarSalto = false;
+        if (transform.position.y < -6)
+        {
+            var vida = GetComponent<PlayerHealth>();
+            if (vida != null)
+                vida.RecibirDano(true);
+            else
+                Reaparecer();
+        }
     }
-
+    public void EstablecerControl(Vector3 lugar)
+    {
+        PuntoControl = lugar;
+    }
     public void Reaparecer()
     {
-        // Llevamos al personaje al punto donde comenzó y detenemos cualquier movimiento que tenía.
-        transform.position = puntoInicio;
+        Vector3 delta = PuntoControl - transform.position;
+        cuerpo.position = PuntoControl;
+        transform.position = PuntoControl;
         cuerpo.linearVelocity = Vector2.zero;
+        buffer = 0;
+        coyote = 0;
+        Reubicado?.Invoke(delta);
     }
 }
