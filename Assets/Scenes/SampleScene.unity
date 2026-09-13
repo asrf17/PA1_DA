@@ -286,7 +286,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 89557642}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 26f6834e18bb881478ec973e45240165, type: 3}
+  m_Script: {fileID: 11500000, guid: 4c705ed8c8934aaa897861965d0c38a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Moneda
 --- !u!58 &89557644
@@ -567,7 +567,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 165659196}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ffb3f07225876bf42897118454a3dd58, type: 3}
+  m_Script: {fileID: 11500000, guid: fda18dec08d54cd2b0df3e79c78d1f90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Peligro
 --- !u!61 &165659198
@@ -719,7 +719,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 271550641}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa11231507126a443bd63a954cc598b3, type: 3}
+  m_Script: {fileID: 11500000, guid: 18c3d0ee011447c6a10da20984e0767a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlataformaMovil
   distancia: 3
@@ -1008,7 +1008,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 318853396}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 26f6834e18bb881478ec973e45240165, type: 3}
+  m_Script: {fileID: 11500000, guid: 4c705ed8c8934aaa897861965d0c38a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Moneda
 --- !u!58 &318853398
@@ -1952,7 +1952,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1141262191}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 26f6834e18bb881478ec973e45240165, type: 3}
+  m_Script: {fileID: 11500000, guid: 4c705ed8c8934aaa897861965d0c38a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Moneda
 --- !u!58 &1141262193
@@ -2111,7 +2111,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1165645184}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9e53cf987eee6a6439535f0d4eb1ceca, type: 3}
+  m_Script: {fileID: 11500000, guid: 5e91bda7cede4e67a739f7bde8d65569, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   velocidad: 6
@@ -2411,7 +2411,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1226757667}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ffb3f07225876bf42897118454a3dd58, type: 3}
+  m_Script: {fileID: 11500000, guid: fda18dec08d54cd2b0df3e79c78d1f90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Peligro
 --- !u!61 &1226757669
@@ -2594,7 +2594,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1351529687}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ffb3f07225876bf42897118454a3dd58, type: 3}
+  m_Script: {fileID: 11500000, guid: fda18dec08d54cd2b0df3e79c78d1f90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Peligro
 --- !u!61 &1351529689
@@ -2829,7 +2829,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1462643676}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 71b47414dc2c78148ad38894b624060d, type: 3}
+  m_Script: {fileID: 11500000, guid: 909221f73984406d80c3eb2feb6f4067, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   textoEstado: {fileID: 904488778}
@@ -2877,7 +2877,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1472606871}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 26f6834e18bb881478ec973e45240165, type: 3}
+  m_Script: {fileID: 11500000, guid: 4c705ed8c8934aaa897861965d0c38a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Moneda
 --- !u!58 &1472606873
@@ -3019,7 +3019,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1563281713}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e9d42ea59daab694387bb3c9ebd00a3b, type: 3}
+  m_Script: {fileID: 11500000, guid: 850364897eb24f479e07c75fef67d782, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Meta
 --- !u!61 &1563281715
@@ -3350,7 +3350,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1678839071}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 26f6834e18bb881478ec973e45240165, type: 3}
+  m_Script: {fileID: 11500000, guid: 4c705ed8c8934aaa897861965d0c38a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Moneda
 --- !u!58 &1678839073
@@ -3659,7 +3659,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1974835135}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 26f6834e18bb881478ec973e45240165, type: 3}
+  m_Script: {fileID: 11500000, guid: 4c705ed8c8934aaa897861965d0c38a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Moneda
 --- !u!58 &1974835137
@@ -3940,7 +3940,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2071685507}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 26f6834e18bb881478ec973e45240165, type: 3}
+  m_Script: {fileID: 11500000, guid: 4c705ed8c8934aaa897861965d0c38a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Moneda
 --- !u!58 &2071685509
@@ -4081,7 +4081,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2106271533}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6dafa0a2a6f254a4b8d31944089ee14c, type: 3}
+  m_Script: {fileID: 11500000, guid: ac6ceda455f140bd9645d2c48164d2de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CamaraFollow
   objetivo: {fileID: 1165645185}
@@ -4179,7 +4179,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2140463006}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 26f6834e18bb881478ec973e45240165, type: 3}
+  m_Script: {fileID: 11500000, guid: 4c705ed8c8934aaa897861965d0c38a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Moneda
 --- !u!58 &2140463008
