@@ -12,6 +12,39 @@ public static class PA2EditorBridge
     {
         EditorApplication.update += Tick;
     }
+    [MenuItem("PA2/Reparar vista 2D del editor")]
+    public static void RepairEditorView()
+    {
+        if (EditorApplication.isPlaying)
+            throw new InvalidOperationException("Detén Play antes de reparar la vista del editor.");
+
+        // Solo restablece cámaras de Scene View; no modifica cámaras ni objetos del juego.
+        foreach (SceneView view in SceneView.sceneViews)
+        {
+            view.ResetCameraSettings();
+            view.in2DMode = true;
+            view.LookAt(new Vector3(8, 1, 0), Quaternion.identity, 10f, true, true);
+            view.Repaint();
+        }
+
+        int missing = 0;
+        var report = new System.Collections.Generic.List<string>();
+        foreach (var transform in Resources.FindObjectsOfTypeAll<Transform>())
+        {
+            var go = transform.gameObject;
+            if (!go.scene.IsValid() || !go.scene.isLoaded)
+                continue;
+            int count = GameObjectUtility.GetMonoBehavioursWithMissingScriptCount(go);
+            if (count == 0)
+                continue;
+            missing += count;
+            report.Add(go.scene.path + ": " + go.name + " -> " + count);
+        }
+        report.Insert(0, "Scripts faltantes en objetos cargados (incluidos inactivos): " + missing);
+        report.Add("Vista Scene restablecida en 2D; escena y cámaras del juego sin cambios.");
+        File.WriteAllLines("Temp/pa2-editor-repair.txt", report);
+        Debug.Log(string.Join("\n", report));
+    }
     static void Tick()
     {
         if (EditorApplication.isCompiling || EditorApplication.isUpdating)
@@ -36,6 +69,8 @@ public static class PA2EditorBridge
                 EditorSceneManager.SaveOpenScenes();
             else if (command == "refresh")
                 AssetDatabase.Refresh();
+            else if (command == "repair-editor")
+                RepairEditorView();
             else if (command == "game")
                 EditorApplication.ExecuteMenuItem("Window/General/Game");
             else if (command == "start")

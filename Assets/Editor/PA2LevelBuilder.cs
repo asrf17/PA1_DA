@@ -153,11 +153,11 @@ public static class PA2LevelBuilder
         PlayerSettings.defaultScreenWidth = 1280;
         PlayerSettings.defaultScreenHeight = 720;
         PlayerSettings.runInBackground = true;
-        foreach (var map in Object.FindObjectsByType<Tilemap>(FindObjectsSortMode.None))
+        foreach (var map in Object.FindObjectsByType<Tilemap>())
             map.RefreshAllTiles();
-        foreach (var tc in Object.FindObjectsByType<TilemapCollider2D>(FindObjectsSortMode.None))
+        foreach (var tc in Object.FindObjectsByType<TilemapCollider2D>())
             tc.ProcessTilemapChanges();
-        foreach (var cc in Object.FindObjectsByType<CompositeCollider2D>(FindObjectsSortMode.None))
+        foreach (var cc in Object.FindObjectsByType<CompositeCollider2D>())
         {
             cc.geometryType = CompositeCollider2D.GeometryType.Polygons;
             cc.GenerateGeometry();

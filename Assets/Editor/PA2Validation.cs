@@ -54,7 +54,7 @@ public static class PA2Validation
     public static void Route()
     {
         log.Clear();
-        p = Object.FindFirstObjectByType<PlayerController>();
+        p = Object.FindAnyObjectByType<PlayerController>();
         rb = p.GetComponent<Rigidbody2D>();
         var gm = GameManager.Instancia;
         gm.Continuar();
@@ -87,35 +87,35 @@ public static class PA2Validation
         {
             if (!EditorApplication.isPlaying)
                 throw new InvalidOperationException("Inicia Play para validar.");
-            p = Object.FindFirstObjectByType<PlayerController>();
+            p = Object.FindAnyObjectByType<PlayerController>();
             rb = p.GetComponent<Rigidbody2D>();
             var gm = GameManager.Instancia;
-            var hud = Object.FindFirstObjectByType<GameHUD>();
+            var hud = Object.FindAnyObjectByType<GameHUD>();
             var health = p.GetComponent<PlayerHealth>();
             Check(gm != null && AudioManager.Instancia != null, "Singletons activos");
             Check(gm.EstadoActual == GameManager.Estado.Inicio && Time.timeScale == 0, "Menú inicial detiene la partida");
-            Check(Object.FindObjectsByType<Moneda>(FindObjectsSortMode.None).Length == 24, "24 monedas en el nivel");
-            Check(Object.FindObjectsByType<Tilemap>(FindObjectsSortMode.None).Any(t => t.GetComponent<TilemapCollider2D>() != null && t.GetUsedTilesCount() > 2), "Tilemaps con colisión compuesta");
-            var cm = Object.FindFirstObjectByType<CinemachineCamera>();
+            Check(Object.FindObjectsByType<Moneda>().Length == 24, "24 monedas en el nivel");
+            Check(Object.FindObjectsByType<Tilemap>().Any(t => t.GetComponent<TilemapCollider2D>() != null && t.GetUsedTilesCount() > 2), "Tilemaps con colisión compuesta");
+            var cm = Object.FindAnyObjectByType<CinemachineCamera>();
             Check(cm.Follow == p.transform && cm.GetComponent<CinemachineConfiner2D>().BoundingShape2D != null && cm.GetComponent<CinemachinePositionComposer>().Composition.DeadZone.Enabled, "Cinemachine: seguimiento, zona muerta y límites");
             var ac = p.GetComponent<PlayerAnimation>().animator.runtimeAnimatorController as AnimatorController;
             Check(ac.layers[0].stateMachine.states.Length == 4 && ac.layers[0].stateMachine.anyStateTransitions.All(t => !t.hasExitTime && t.duration == 0), "Animator: Idle, Run, Jump, Fall sin Exit Time");
-            Check(Object.FindObjectsByType<Transform>(FindObjectsSortMode.None).All(t => GameObjectUtility.GetMonoBehavioursWithMissingScriptCount(t.gameObject) == 0), "Sin scripts faltantes en la escena");
+            Check(Object.FindObjectsByType<Transform>().All(t => GameObjectUtility.GetMonoBehavioursWithMissingScriptCount(t.gameObject) == 0), "Sin scripts faltantes en la escena");
             Check(AudioManager.Instancia.musica.clip != null && AudioManager.Instancia.musica.loop && AudioManager.Instancia.clips.All(c => c != null), "Música en bucle y cinco efectos asignados");
             Check(p.GetComponent<PlayerFeedback>().polvo != null && p.GetComponent<PlayerFeedback>().impacto != null, "Partículas de salto e impacto asignadas");
             gm.Continuar();
             p.enabled = false;
             var mode = Physics2D.simulationMode;
             Physics2D.simulationMode = SimulationMode2D.Script;
-            foreach (var map in Object.FindObjectsByType<Tilemap>(FindObjectsSortMode.None))
+            foreach (var map in Object.FindObjectsByType<Tilemap>())
                 map.RefreshAllTiles();
-            foreach (var tileCollider in Object.FindObjectsByType<TilemapCollider2D>(FindObjectsSortMode.None))
+            foreach (var tileCollider in Object.FindObjectsByType<TilemapCollider2D>())
                 tileCollider.ProcessTilemapChanges();
-            foreach (var composite in Object.FindObjectsByType<CompositeCollider2D>(FindObjectsSortMode.None))
+            foreach (var composite in Object.FindObjectsByType<CompositeCollider2D>())
                 composite.GenerateGeometry();
             Physics2D.SyncTransforms();
             log.Add("INFO pos=" + rb.position + " gravity=" + Physics2D.gravity + " body=" + rb.bodyType + " simulation=" + rb.simulated);
-            foreach (var collider in Object.FindObjectsByType<CompositeCollider2D>(FindObjectsSortMode.None))
+            foreach (var collider in Object.FindObjectsByType<CompositeCollider2D>())
                 log.Add("INFO collider " + collider.name + " paths=" + collider.pathCount + " bounds=" + collider.bounds);
             try
             {
@@ -157,7 +157,7 @@ public static class PA2Validation
                 Check(health.Vidas == lives - 1 && Mathf.Abs(rb.position.x - 68) < .5f, "Púas restan una vida y reaparece en el control");
                 health.RecibirDano();
                 Check(health.Vidas == lives - 1, "Invulnerabilidad evita daño repetido");
-                foreach (var coin in Object.FindObjectsByType<Moneda>(FindObjectsSortMode.None))
+                foreach (var coin in Object.FindObjectsByType<Moneda>())
                 {
                     if (gm.Monedas >= 10)
                         break;
